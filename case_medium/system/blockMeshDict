@@ -1,0 +1,113 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1.0;
+
+// water depth
+hw 1.0;
+// inlet channel length
+lx #eval{ 3.0*pi() };
+//channel width
+lz #eval{ pi() };
+
+vertices
+(
+    (0   0   0)
+    ($lx 0   0)
+    ($lx $hw 0)
+    (0   $hw 0)
+    (0   0   $lz)
+    ($lx 0   $lz)
+    ($lx $hw $lz)
+    (0   $hw $lz)
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (96 96 96) simpleGrading (1 19.7 1)
+);
+
+edges
+(
+);
+boundary
+(
+    bottomWall
+    {
+        type            wall;
+        faces           (
+                         (0 1 5 4)
+                        );
+    }
+    topSurface
+    {
+        type            symmetryPlane;
+        faces           (
+                         (2 3 7 6)
+                        );
+    }
+
+    back
+    {
+        type            cyclic;
+        neighbourPatch  front;
+        faces           (
+                         (0 3 2 1)
+                        );
+    }
+
+    front
+    {
+        type            cyclic;
+        neighbourPatch  back;
+        faces           (
+                         (4 5 6 7)
+                        );
+    }
+
+//    inlet
+//    {
+//        type            patch;
+//        faces           (
+//                         (0 4 7 3)
+//                        );
+//    }
+//    outlet
+//    {
+//        type            patch;
+//        faces           (
+//                         (1 2 6 5)
+//                        );
+//    }
+    inlet
+    {
+        type            cyclic;
+        neighbourPatch  outlet;
+        faces           (
+                         (0 4 7 3)
+                        );
+    }
+    outlet
+    {
+        type            cyclic;
+        neighbourPatch  inlet;
+        faces           (
+                         (1 2 6 5)
+                        );
+    }
+
+);
+

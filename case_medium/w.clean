@@ -1,0 +1,8 @@
+#!/bin/bash
+# Reset the case to its as-downloaded state. DESTRUCTIVE: deletes all results.
+cd "${0%/*}" || exit 1
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions
+
+cleanCase0                               # time dirs, 0/, processor*, polyMesh, logs, postProcessing
+rm -f out.o error.e
+find z.openfoam_output -type f ! -name .gitkeep -delete 2>/dev/null

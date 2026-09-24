@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH --job-name=retau_180_fine
+#SBATCH --mail-type=FAIL             # BEGIN,END,FAIL,ALL
+#SBATCH --mail-user=your.email@example.com
+#SBATCH -o out.o
+#SBATCH -e error.e
+#SBATCH -N 1                         # number of nodes
+#SBATCH -n 8                         # MPI ranks: must equal numberOfSubdomains in system/decomposeParDict
+#SBATCH -t 08:00:00                  # wall time: TOO SHORT for the fine mesh, set it before submitting (see README)
+#SBATCH --mem-per-cpu=2g
+##SBATCH --account=<your-account>
+
+# If OpenFOAM is not loaded by default on your cluster, source it here, e.g.
+# source /opt/OpenFOAM/OpenFOAM-v2412/etc/bashrc
+
+# Run the solver in parallel
+mpirun pimpleFoam -parallel
+
+# Rebuild the full-domain time directories. Needed for post-processing
+# and to map this solution onto the next finer mesh.
+reconstructPar -newTimes

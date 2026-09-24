@@ -1,0 +1,31 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Drives the periodic channel: a uniform body force is adjusted every time
+// step so that the volume-averaged streamwise velocity equals Ubar.
+// Ubar = 15.67 corresponds to Re_tau = 180 (u_tau = 1, h = 1, nu = 1/180),
+// estimated from Re_b = (Re_tau/0.09)^(1/0.88) (Pope, 2000).
+
+momentumSource
+{
+    type            meanVelocityForce;
+    selectionMode   all;
+    fields          (U);
+    Ubar            (15.67 0 0);
+}
+
+
+// ************************************************************************* //

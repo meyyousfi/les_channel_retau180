@@ -1,0 +1,15 @@
+# OpenFOAM generated data (recreated by the scripts)
+case_*/0/
+case_*/[1-9]*/
+case_*/0.[0-9]*/
+case_*/processor*/
+case_*/constant/polyMesh/
+case_*/postProcessing/
+case_*/log.*
+case_*/out.o
+case_*/error.e
+case_*/z.openfoam_output/*
+!case_*/z.openfoam_output/.gitkeep
+
+# MATLAB output written next to the script
+tools/matlab/initial*Profile
